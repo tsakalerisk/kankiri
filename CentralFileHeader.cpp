@@ -29,6 +29,19 @@ CentralFileHeader::CentralFileHeader(ifstream &infile) : infile(infile) {
     infile.read(&extraField[0], extraFieldLength);
     fileComment.resize(fileCommentLength);
     infile.read(&fileComment[0], fileCommentLength);
+    calculateLastModifiedDateTime();
+}
+
+void CentralFileHeader::calculateLastModifiedDateTime() {
+    uint32_t seconds = (lastModifiedTime & 0b0000000000011111) * 2;
+    uint32_t minutes = (lastModifiedTime & 0b0000011111100000) >> 5;
+    uint32_t hours = (lastModifiedTime &   0b1111100000000000) >> 11;
+
+    uint32_t days = lastModifiedDate &    0b0000000000011111;
+    uint32_t months = (lastModifiedDate & 0b0000000111100000) >> 5;
+    uint32_t years = ((lastModifiedDate & 0b1111111000000000) >> 9) + 1980;
+
+    lastModifiedDateTime = QDateTime(QDate(years, months, days), QTime(hours, minutes, seconds));
 }
 
 uint32_t CentralFileHeader::getVersion() const {
@@ -105,6 +118,10 @@ const string &CentralFileHeader::getExtraField() const {
 
 const string &CentralFileHeader::getFileComment() const {
     return fileComment;
+}
+
+const QDateTime &CentralFileHeader::getLastModifiedDateTime() const {
+    return lastModifiedDateTime;
 }
 
 ostream &operator<<(ostream &os, const CentralFileHeader &header) {

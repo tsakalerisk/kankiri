@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <ostream>
+#include <QDateTime>
 
 using namespace std;
 
@@ -29,6 +30,9 @@ private:
     string filename;
     string extraField;
     string fileComment;
+    QDateTime lastModifiedDateTime;
+
+    void calculateLastModifiedDateTime();
 
 public:
     CentralFileHeader(ifstream&);
@@ -70,6 +74,8 @@ public:
     const string &getExtraField() const;
 
     const string &getFileComment() const;
+
+    const QDateTime &getLastModifiedDateTime() const;
 
     friend ostream &operator<<(ostream &os, const CentralFileHeader &header);
 };

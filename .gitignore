@@ -1,2 +1,3 @@
 /cmake-build-debug/
 *.zip
+CMakeLists.txt.user

@@ -5,15 +5,26 @@
 #ifndef KANKIRI_ZIPFILE_H
 #define KANKIRI_ZIPFILE_H
 
+#include <QObject>
 #include <fstream>
+#include "CentralFileHeader.h"
 
-class ZipFile {
-private:
-    std::ifstream infile;
+class ZipFile : public QObject {
+
+Q_OBJECT
+
 public:
-    ZipFile(char *);
     ~ZipFile();
+
+    void openFile(string filename);
+
     bool isOpen();
+
+signals:
+    void fileListReady(vector<CentralFileHeader>& fileList);
+
+private:
+    ifstream infile;
 };
 
 

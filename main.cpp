@@ -1,17 +1,26 @@
 #include <iostream>
 #include <QApplication>
-#include <QPushButton>
 
 #include "ZipFile.h"
+#include "MainWindow.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    ZipFile zipFile(argv[1]);
-    cout << (zipFile.isOpen() ? "File opened" : "File not found") << endl;
+    ZipFile zipFile;
     QApplication a(argc, argv);
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
+    QApplication::setStyle("fusion");
+
+    auto *mainWindow = new MainWindow();
+    QObject::connect(&zipFile, &ZipFile::fileListReady, mainWindow, &MainWindow::onFileListReady);
+
+    try {
+        zipFile.openFile(string(argv[1]));
+    }
+    catch (runtime_error& e) {
+        cout << e.what() << endl;
+    }
+
+    mainWindow->show();
     return QApplication::exec();
 }

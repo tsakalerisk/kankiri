@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.23)
 project(kankiri)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -21,6 +21,10 @@ add_executable(kankiri main.cpp
         EOCD.h
         CentralFileHeader.cpp
         CentralFileHeader.h
+        MainWindow.h
+        MainWindow.ui
+        MainWindow.cpp
+
 )
 target_link_libraries(kankiri
         Qt::Core
